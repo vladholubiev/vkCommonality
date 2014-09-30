@@ -13,9 +13,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class VkApi {
     public static List<String> getMembers(String groupId) throws Exception {
@@ -42,6 +40,18 @@ public class VkApi {
         return publicPages;
     }
 
+    public static List<String> getUserArtists(String uid) throws Exception {
+        String callUrl = URL.getUserAudiosURL(uid);
+        List audiosResponse = getAudiosResponse(callUrl);
+        List<String> audios = new ArrayList<>();
+
+        for (Object o : audiosResponse) {
+            String artist = (String) ((JSONObject) o).get("artist");
+            if (artist != null && !audios.contains(artist.toLowerCase())) audios.add(artist.toLowerCase());
+        }
+        return audios;
+    }
+
     private static String getJSON(String url) throws IOException, URISyntaxException {
         String json;
 
@@ -64,6 +74,13 @@ public class VkApi {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) ((JSONObject) jsonParser.parse(json)).get("response");
         return (JSONArray) jsonObject.get("users");
+    }
+
+    private static List getAudiosResponse(String callUrl) throws Exception {
+        String json = getJSON(callUrl);
+        JSONParser jsonParser = new JSONParser();
+        JSONArray jsonArray = (JSONArray) ((JSONObject) jsonParser.parse(json)).get("response");
+        return jsonArray != null ? jsonArray.subList(1, jsonArray.size()) : new JSONArray();
     }
 
     public static JSONArray getSubscriptionsResponse(String callUrl) throws Exception {

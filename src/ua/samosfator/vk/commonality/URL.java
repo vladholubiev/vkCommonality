@@ -21,4 +21,13 @@ public class URL {
                 .addParameter("user_id", uid);
         return uriBuilder.build().toString();
     }
+
+    public static String getUserAudiosURL(String uid) throws URISyntaxException {
+        URIBuilder uriBuilder = new URIBuilder().setScheme("https").setHost("api.vk.com")
+                .setPath("/method/audio.get")
+                .addParameter("access_token", Credentials.VK_ACCESS_TOKEN)
+                .addParameter("owner_id", uid)
+                .addParameter("count", "6000");
+        return uriBuilder.build().toString();
+    }
 }

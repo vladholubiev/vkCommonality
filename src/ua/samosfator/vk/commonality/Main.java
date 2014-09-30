@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Group pzas = new Group("76497135");
-        pzas.countTopSubscriptions();
-        pzas.print();
+        pzas.countTopArtists();
+        pzas.printTopArtists();
     }
 }
