@@ -17,44 +17,18 @@ public class Group {
         this.groupId = groupId;
     }
 
-    public void countTopSubscriptions() throws Exception {
+    public Map<Object, Object> countTopSubscriptions() throws Exception {
         List<String> groupMembers = VkApi.getMembers(groupId);
-        List<PublicPage> userSubscriptions = new ArrayList<>();
 
-        for (String groupMember : groupMembers) {
-            userSubscriptions.addAll(VkApi.getUserSubscriptions(groupMember));
-            System.out.println("Processing: " + groupMember);
-        }
-        for (PublicPage pp : userSubscriptions) {
-            int occurrences = Collections.frequency(userSubscriptions, pp);
-            subscriptionsCount.put(pp, occurrences);
-        }
 
-        //sort map by value
-        subscriptionsCount = subscriptionsCount.entrySet().stream()
-                .sorted(Collections.reverseOrder(Comparator.comparing(Map.Entry::getValue)))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (e1, e2) -> e1, LinkedHashMap::new));
+
+
+        return new Counter(groupMembers).countTopSubscriptions();
     }
 
-    public void countTopArtists() throws Exception {
+    public Map<Object, Object> countTopArtists() throws Exception {
         List<String> groupMembers = VkApi.getMembers(groupId);
-        List<String> userAudios = new ArrayList<>();
-
-        for (String groupMember : groupMembers) {
-            userAudios.addAll(VkApi.getUserArtists(groupMember));
-            System.out.println("Processing: " + groupMember);
-        }
-        for (String artist : userAudios) {
-            int occurrences = Collections.frequency(userAudios, artist);
-            artistCount.put(artist, occurrences);
-        }
-
-        //sort map by value
-        artistCount = artistCount.entrySet().stream()
-                .sorted(Collections.reverseOrder(Comparator.comparing(Map.Entry::getValue)))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (e1, e2) -> e1, LinkedHashMap::new));
+        return new Counter(groupMembers).countArtists();
     }
 
     //TODO Implement different printing styles
@@ -68,9 +42,9 @@ public class Group {
         pw.close();
     }
 
-    public void printTopArtists() throws FileNotFoundException {
+    public void printTopArtists(Map<Object, Object> map) throws FileNotFoundException {
         PrintWriter pw = new PrintWriter(new FileOutputStream("result.txt"));
-        for (Map.Entry<String, Integer> entry : artistCount.entrySet()) {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
             pw.println(entry.getValue() + " - " + CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, entry.getKey()));
         }
         pw.flush();
