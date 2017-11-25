@@ -4,9 +4,16 @@ vkCommonality
 This app allows you to find out what public pages, groups or audios are the most mainstream among your friends or in a certain community in vk.com
 
 ```java
+// Init vk.com group by id
 Group pzas = new Group("76497135");
+
+// print most popular public pages in common
 pzas.countTopSubscriptions();
 pzas.print();
+
+// print most popular artists in common
+pzas.countTopArtists();
+pzas.printTopArtists();
 ```
 
 ### Result
