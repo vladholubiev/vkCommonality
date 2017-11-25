@@ -1,7 +1,7 @@
 vkCommonality
 =============
 
-This app allows you to find out what public pages, groups or audios are the most mainstream among your friends or in a certain community. Development is in progress.
+This app allows you to find out what public pages, groups or audios are the most mainstream among your friends or in a certain community in vk.com
 
 ```java
 Group pzas = new Group("76497135");
@@ -11,7 +11,9 @@ pzas.print();
 
 ### Result
 
-Results from my university group:
+So this app was developed when I went to university and wanted to find out which common interests I have with my groupmates.
+
+This list is ranked by most popular common public pages on vk.com
 
 ```
 20 - @club36283439(Від Тарнополя до Тернополя)
